@@ -16,7 +16,8 @@ def declare_queue(channel):
         channel.queue_declare(queue = vm_name)
     return 0
 
-
+def copy_video_seg(seg_id):
+    pass
 
 
 if __name__ == '__main__':
@@ -40,7 +41,6 @@ if __name__ == '__main__':
         seg_id = id_gen()
         try:
             cmd = "INSERT INTO tasks VALUES (0, \"%s\", %d, NULL, NULL)" % (seg_id, 1)
-            #print cmd
             cursor.execute(cmd)
             db.commit()
 
@@ -55,8 +55,8 @@ if __name__ == '__main__':
 
 
 
-   #db.close()
-   #connection.close()
+   db.close()
+   connection.close()
 
 
 
