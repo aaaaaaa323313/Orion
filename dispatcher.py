@@ -1,9 +1,11 @@
 import pika
 import time
+import glob
 import config
 import string
 import random
 import MySQLdb
+from shutil import copyfile
 
 
 def id_gen(size=6, chars = string.ascii_uppercase + string.digits + \
@@ -17,7 +19,8 @@ def declare_queue(channel):
     return 0
 
 def copy_video_seg(seg_id):
-    pass
+    segs = glob.glob("/var/www/video_lib/*.mp4")
+    seg  = random.choice(segs)
 
 
 if __name__ == '__main__':
