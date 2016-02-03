@@ -2,20 +2,25 @@
 import os
 import pika
 import time
+import config
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(
-            host='localhost'))
-channel = connection.channel()
 
-channel.queue_declare(queue='vm-1')
+
+
 
 def callback(ch, method, properties, body):
-    print(" [x] Received %r" % body)
-    time.sleep(5)
-    print 'sleep for 5 seconds'
+    print("Received %r" % body)
 
-channel.basic_consume(callback, queue='vm-1', no_ack=True)
 
-print(' [*] Waiting for messages. To exit press CTRL+C')
-channel.start_consuming()
+
+if __name__ == '__main__':
+    connection = pika.BlockingConnection(pika.ConnectionParameters( \
+            host = config.broker_server))
+
+    channel = connection.channel()
+    channel.queue_declare(queue = config.vm_name)
+
+    channel.basic_consume(callback, queue = config.vm_name, no_ack = True)
+
+    channel.start_consuming()
 
