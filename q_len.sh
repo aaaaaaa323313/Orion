@@ -1,1 +1,1 @@
-sudo rabbitmqctl list_queues
+sudo -i rabbitmqctl list_queues

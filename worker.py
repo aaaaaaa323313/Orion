@@ -4,8 +4,12 @@ import pika
 import time
 import urllib
 import config
+import MySQLdb
 import subprocess
 
+
+db = None
+cursor = None
 worker_path = config.worker_path
 
 def download_segment(seg_id):
@@ -35,24 +39,43 @@ def transcode(seg_id):
 
 def callback(ch, method, properties, body):
     print("Received %r" % body)
+    ch.basic_ack(delivery_tag = method.delivery_tag)
+
     seg_id = body
     ret = download_segment(seg_id)
     if ret == -1:
         return -1
 
-    transcode(seg_id)
+    ret = transcode(seg_id)
+    if ret == 0:
+        cmd = "UPDATE tasks SET end_time = now(), success = 1  WHERE \
+                segment_id = \"%s\"" % seg_id
 
+        try:
+            cursor.execute(cmd)
+            db.commit()
+        except:
+            db.rollback()
+            print 'db error'
 
 
 
 if __name__ == '__main__':
+
+    db = MySQLdb.connect("localhost","root","lovelvyan","test" )
+    cursor = db.cursor()
+
     connection = pika.BlockingConnection(pika.ConnectionParameters( \
             host = config.broker_server))
 
     channel = connection.channel()
     channel.queue_declare(queue = config.vm_name)
+    channel.basic_qos(prefetch_count=1)
 
-    channel.basic_consume(callback, queue = config.vm_name, no_ack = True)
+
+    channel.basic_consume(callback, queue = config.vm_name)
 
     channel.start_consuming()
+
+    db.close()
 

@@ -42,11 +42,12 @@ if __name__ == '__main__':
     cursor = db.cursor()
 
     i = 0;
-    while i < 1000:
+    while i < 10:
         i = i + 1;
         seg_id = id_gen()
         copy_video_seg(seg_id)
-        vm_name = 'vm_' + str(i%10 +1)
+        #vm_name = 'vm_' + str(i%10 +1)
+        vm_name = 'vm_' + str(8)
 
         try:
             cmd = "INSERT INTO tasks VALUES (NULL, \"%s\", \"%s\", NULL, 0, 0)" % (seg_id, vm_name)
