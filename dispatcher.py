@@ -1,3 +1,4 @@
+import os
 import pika
 import time
 import glob
@@ -5,7 +6,7 @@ import config
 import string
 import random
 import MySQLdb
-from shutil import copyfile
+import shutil
 
 
 def id_gen(size=6, chars = string.ascii_uppercase + string.digits + \
@@ -20,7 +21,10 @@ def declare_queue(channel):
 
 def copy_video_seg(seg_id):
     segs = glob.glob("/var/www/video_lib/*.mp4")
-    seg  = random.choice(segs)
+    src_seg = random.choice(segs)
+    dst_seg = os.path.join(config.content_path, seg_id + '.mp4')
+    shutil.copyfile(src_seg, dst_seg)
+    return 0
 
 
 if __name__ == '__main__':
@@ -38,28 +42,25 @@ if __name__ == '__main__':
     cursor = db.cursor()
 
     i = 0;
-
-    while True:
+    while i < 1000:
         i = i + 1;
         seg_id = id_gen()
+        copy_video_seg(seg_id)
+        vm_name = 'vm_' + str(i%10 +1)
+
         try:
-            cmd = "INSERT INTO tasks VALUES (0, \"%s\", %d, NULL, NULL)" % (seg_id, 1)
+            cmd = "INSERT INTO tasks VALUES (NULL, \"%s\", \"%s\", NULL, 0, 0)" % (seg_id, vm_name)
             cursor.execute(cmd)
             db.commit()
-
         except:
             db.rollback()
             print 'error'
 
-        vm_name = 'vm_' + str(i%10 +1)
-
         channel.basic_publish(exchange='', routing_key = vm_name, body = seg_id)
-        print(" [x] Sent " + seg_id)
+        print("Sent: " + seg_id)
 
-
-
-   db.close()
-   connection.close()
+    db.close()
+    connection.close()
 
 
 

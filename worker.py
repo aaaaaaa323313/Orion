@@ -2,14 +2,46 @@
 import os
 import pika
 import time
+import urllib
 import config
+import subprocess
 
+worker_path = config.worker_path
 
+def download_segment(seg_id):
+    seg = urllib.URLopener()
+    try:
+        url = "http://127.0.0.1/" + seg_id + '.mp4'
+        dst_seg = os.path.join(config.worker_path, seg_id + '.mp4')
+        seg.retrieve(url, dst_seg)
+        return 0
+    except:
+        return -1
 
+def transcode(seg_id):
+    tgt_res = config.target_resolution
+    dst_seg = os.path.join(config.worker_path, seg_id + '.mp4')
+
+    cmd = "ffmpeg -y -i " + dst_seg
+    for res in tgt_res:
+        tgt_seg = os.path.join(config.worker_path, seg_id + '_' + res + '.mp4')
+        cmd += " -s " + res + " -strict -2 " + tgt_seg
+
+    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+    stdout, stderr = p.communicate()
+    ret = p.returncode
+    return ret
 
 
 def callback(ch, method, properties, body):
     print("Received %r" % body)
+    seg_id = body
+    ret = download_segment(seg_id)
+    if ret == -1:
+        return -1
+
+    transcode(seg_id)
+
 
 
 

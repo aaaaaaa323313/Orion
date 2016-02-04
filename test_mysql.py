@@ -13,7 +13,7 @@ cur_time = 0
 
 while cur_time - start_time < 60:
     try:
-        cmd = "INSERT INTO tasks VALUES (0, \"%s\", %d, %d, %d)" % ('abcd', 1, 0, 0)
+        cmd = "INSERT INTO tasks VALUES (0, \"%s\", %d, NULL, NULL)" % ('abcd', 1)
         #print cmd
         cursor.execute(cmd)
         db.commit()
