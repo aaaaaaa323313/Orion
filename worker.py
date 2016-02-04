@@ -62,7 +62,9 @@ def callback(ch, method, properties, body):
 
 if __name__ == '__main__':
 
-    db = MySQLdb.connect("localhost","root","lovelvyan","test" )
+    db_server = config.db_server
+    db_name   = config.db_name
+    db = MySQLdb.connect(db_server, "root", "lovelvyan", db_name)
     cursor = db.cursor()
 
     connection = pika.BlockingConnection(pika.ConnectionParameters( \

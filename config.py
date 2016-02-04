@@ -1,4 +1,5 @@
 db_server       = 'localhost'
+db_name         = 'test'
 content_server  = 'localhost'
 broker_server   = 'localhost'
 
