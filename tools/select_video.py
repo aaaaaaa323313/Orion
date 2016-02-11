@@ -21,8 +21,8 @@ for fname in os.listdir(basepath):
     if ext == '.mp4':
         info = c.probe(path)
 
-        #if info.video.video_width == 1280:
-            #print info.video.video_width, 'x', info.video.video_height
+        if info.video.video_width == 1280:
+            print info.video.video_width, 'x', info.video.video_height
         #dur = info.format.duration
         #print dur/60.0
         '''
@@ -33,4 +33,4 @@ for fname in os.listdir(basepath):
         #print info.video.video_width, 'x', info.video.video_height
         #print info.video.video_fps
         #print info.video.bitrate
-        print info.video.codec
+        #print info.video.codec
