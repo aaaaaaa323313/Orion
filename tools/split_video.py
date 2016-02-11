@@ -1,4 +1,5 @@
 import os
+import subprocess
 
 video_path = '/home/guanyu/Socrates/new_data_set/'
 dst_path = '/home/guanyu/Socrates/data_set/'
@@ -13,3 +14,6 @@ for file in os.listdir(video_path):
                 dst_path + f_pre + '.list  ' + dst_path + f_pre + '%03d.mp4'
         print cmd
 
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+        stdout, stderr = p.communicate()
+        ret = p.returncode
