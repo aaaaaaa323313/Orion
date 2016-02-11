@@ -8,7 +8,7 @@ import subprocess
 from converter import Converter
 
 basepath = '/home/guanyu/Socrates/data_set/'
-#new_path = '/data/unused_video_set/'
+new_path = '/home/guanyu/Socrates/new_data_set/'
 c = Converter()
 
 
@@ -24,12 +24,11 @@ for fname in os.listdir(basepath):
         if info.video.video_width == 1280:
             #print info.video.video_width, 'x', info.video.video_height
             dur = info.format.duration
-            print dur/60.0
-        '''
-        if dur > 2*60 and dur < 60*60*1.5:
+            #print dur/60.0
+
+        if dur > 3*60 and dur < 10*60:
             os.rename(path, new_path + fname)
             print dur/60.0
-        '''
         #print info.video.video_width, 'x', info.video.video_height
         #print info.video.video_fps
         #print info.video.bitrate
