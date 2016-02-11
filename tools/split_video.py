@@ -10,6 +10,6 @@ for file in os.listdir(video_path):
         print f_pre
 
         cmd = 'ffmpeg -i ' + f_name + ' -f segment -segment_time 10 -c copy -map 0 -segment_list ' + \
-                f_pre + '.list  ' + f_pre + '%03d.mp4'
+                dst_path + f_pre + '.list  ' + dst_path + f_pre + '%03d.mp4'
         print cmd
 
