@@ -7,7 +7,7 @@ import random
 import subprocess
 from converter import Converter
 
-basepath = '/data/video_dataset/'
+basepath = '/home/guanyu/Socrates/data_set/'
 #new_path = '/data/unused_video_set/'
 c = Converter()
 
@@ -22,9 +22,9 @@ for fname in os.listdir(basepath):
         info = c.probe(path)
 
         if info.video.video_width == 1280:
-            print info.video.video_width, 'x', info.video.video_height
-        #dur = info.format.duration
-        #print dur/60.0
+            #print info.video.video_width, 'x', info.video.video_height
+            dur = info.format.duration
+            print dur/60.0
         '''
         if dur > 2*60 and dur < 60*60*1.5:
             os.rename(path, new_path + fname)
