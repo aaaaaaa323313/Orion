@@ -9,6 +9,7 @@ for file in os.listdir(video_path):
         f_pre, _ = os.path.splitext(file)
         print f_pre
 
-        #cmd = 'ffmpeg -i ' + f_name + ' -f segment -segment_time 10 -c copy -map 0 -segment_list ' + \
-        #    50mb.list 50mb%03d.mp4
+        cmd = 'ffmpeg -i ' + f_name + ' -f segment -segment_time 10 -c copy -map 0 -segment_list ' + \
+                f_pre + '.list  ' + f_pre + '%03d.mp4'
+        print cmd
 
