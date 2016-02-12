@@ -7,7 +7,6 @@ import pika
 import glob
 import config
 import string
-import random
 import MySQLdb
 import shutil
 from random import choice
