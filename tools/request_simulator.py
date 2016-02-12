@@ -39,7 +39,7 @@ if __name__ == '__main__':
     declare_queue(channel)
 
     # Open database connection
-    db = MySQLdb.connect("localhost","root","lovelvyan","test" )
+    db = MySQLdb.connect("localhost","root","","test" )
 
     # prepare a cursor object using cursor() method
     cursor = db.cursor()
