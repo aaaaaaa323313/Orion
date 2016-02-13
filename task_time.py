@@ -10,7 +10,7 @@ if __name__ == '__main__':
     cursor = db.cursor()
 
     try:
-        cmd  = "select * from tasks"
+        cmd  = "select UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time) from tasks;"
         cursor.execute(cmd)
         rows = cursor.fetchall()
     except:
