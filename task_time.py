@@ -16,7 +16,12 @@ if __name__ == '__main__':
     except:
         print 'error'
 
+    num = 0.0
+    sum = 0.0
     for row in rows:
-        print int(row[0])
+        sum += int(row[0])
+        num += 1
+
+    print sum / num
 
     db.close()
