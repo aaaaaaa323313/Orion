@@ -64,7 +64,7 @@ if __name__ == '__main__':
 
     db_server = config.db_server
     db_name   = config.db_name
-    db = MySQLdb.connect(db_server, "root", "lovelvyan", db_name)
+    db = MySQLdb.connect(db_server, "root", "", db_name)
     cursor = db.cursor()
 
     connection = pika.BlockingConnection(pika.ConnectionParameters( \

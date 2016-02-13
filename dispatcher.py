@@ -36,13 +36,13 @@ if __name__ == '__main__':
     declare_queue(channel)
 
     # Open database connection
-    db = MySQLdb.connect("localhost","root","lovelvyan","test" )
+    db = MySQLdb.connect("localhost","root","","test" )
 
     # prepare a cursor object using cursor() method
     cursor = db.cursor()
 
     i = 0;
-    while i < 10:
+    while i < 10000:
         i = i + 1;
         seg_id = id_gen()
         copy_video_seg(seg_id)

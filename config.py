@@ -3,7 +3,7 @@ db_name         = 'test'
 content_server  = 'localhost'
 broker_server   = 'localhost'
 
-content_path    = '/var/www/html/'
+content_path    = '/home/guanyu/Public/'
 
 worker_path     = '/data/worker/'
 
