@@ -17,6 +17,6 @@ if __name__ == '__main__':
         print 'error'
 
     for row in rows:
-        print row
+        print int(row[0])
 
     db.close()
