@@ -10,7 +10,7 @@ if __name__ == '__main__':
     cursor = db.cursor()
 
     try:
-        cmd  = "select UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time) from tasks;"
+        cmd  = "select UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time) from tasks where success = 1;"
         cursor.execute(cmd)
         rows = cursor.fetchall()
     except:
@@ -19,6 +19,7 @@ if __name__ == '__main__':
     num = 0.0
     sum = 0.0
     for row in rows:
+        print  int(row[0])
         sum += int(row[0])
         num += 1
 

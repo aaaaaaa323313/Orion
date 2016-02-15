@@ -42,7 +42,9 @@ def callback(ch, method, properties, body):
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
     seg_id = body
+    old_t  = time.time()
     ret = download_segment(seg_id)
+    print time.time() - old_t
     if ret == -1:
         return -1
 
@@ -72,7 +74,7 @@ if __name__ == '__main__':
 
     channel = connection.channel()
     channel.queue_declare(queue = config.vm_name)
-    channel.basic_qos(prefetch_count=1)
+    channel.basic_qos(prefetch_count=3)
 
 
     channel.basic_consume(callback, queue = config.vm_name)

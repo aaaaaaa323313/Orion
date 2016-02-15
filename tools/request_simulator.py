@@ -23,7 +23,7 @@ def declare_queue(channel):
     return 0
 
 def copy_video_seg(seg_id):
-    segs = glob.glob("/var/www/video_lib/*.mp4")
+    segs = glob.glob("/home/guanyu/Socrates/data_set/*.mp4")
     src_seg = random.choice(segs)
     dst_seg = os.path.join(config.content_path, seg_id + '.mp4')
     shutil.copyfile(src_seg, dst_seg)
@@ -47,7 +47,7 @@ if __name__ == '__main__':
     f = open('arrive_time.pkl', 'r')
     arrive_time = pickle.load(f)
 
-    duration = 60 * 11
+    duration = 60 * 60 * 2
     start_time = time.time()
 
     while True:
