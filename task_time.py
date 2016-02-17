@@ -1,7 +1,11 @@
+import sys
 import MySQLdb
 
 
 if __name__ == '__main__':
+
+    tn = sys.argv[1]
+    print tn
 
     # Open database connection
     db = MySQLdb.connect("localhost","root","","test" )
@@ -10,7 +14,7 @@ if __name__ == '__main__':
     cursor = db.cursor()
 
     try:
-        cmd  = "select UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time) from tasks where success = 1;"
+        cmd  = "select UNIX_TIMESTAMP(end_time) - UNIX_TIMESTAMP(start_time) from %s where success = 1;" % tn
         cursor.execute(cmd)
         rows = cursor.fetchall()
     except:
@@ -19,7 +23,7 @@ if __name__ == '__main__':
     num = 0.0
     sum = 0.0
     for row in rows:
-        print  int(row[0])
+        #print  int(row[0])
         sum += int(row[0])
         num += 1
 

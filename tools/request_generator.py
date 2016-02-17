@@ -5,7 +5,7 @@ import pickle
 
 t = 0
 duration = 60 * 60 * 5
-rate = 0.23
+rate = 0.255
 arrive_time = []
 
 while t < duration:
