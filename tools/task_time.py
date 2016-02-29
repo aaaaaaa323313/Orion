@@ -8,7 +8,7 @@ if __name__ == '__main__':
     print tn
 
     # Open database connection
-    db = MySQLdb.connect("localhost","root","","test" )
+    db = MySQLdb.connect("localhost","root","","exp_1")
 
     # prepare a cursor object using cursor() method
     cursor = db.cursor()
@@ -28,5 +28,8 @@ if __name__ == '__main__':
         num += 1
 
     print sum / num
+    print num
 
     db.close()
+
+
