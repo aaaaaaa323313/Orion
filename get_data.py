@@ -6,7 +6,7 @@ import urllib2
 f = open('trace.dat','w')
 
 while True:
-    try:
+    #try:
         content = urllib2.urlopen("https://api.twitch.tv/kraken/streams/summary").read()
         x = json.loads(content)
         res = str(time.time()) + '      ' + str(x['channels']) + '\n'
@@ -14,8 +14,8 @@ while True:
         f.flush()
         time.sleep(60)
 
-    except:
+   # except:
         print 'error'
-        continue
+        #continue
 
 f.close()
