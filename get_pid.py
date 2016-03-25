@@ -1,5 +1,4 @@
 import subprocess
-import psutil
 import signal
 import redis
 import time
