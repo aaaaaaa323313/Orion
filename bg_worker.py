@@ -42,9 +42,9 @@ def transcode(seg_id):
 
 
 def callback(ch, method, properties, body):
-    q = channel.queue_declare(queue = config.vm_name)
-    q_len = q.method.message_count
-    print q_len
+    #q = channel.queue_declare(queue = config.vm_name)
+    #q_len = q.method.message_count
+    #print q_len
     #print("Received %r" % body)
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
