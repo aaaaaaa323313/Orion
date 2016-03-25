@@ -27,7 +27,7 @@ def transcode(seg_id):
     tgt_res = config.target_resolution
     dst_seg = os.path.join(config.worker_path, seg_id + '.mp4')
 
-    cmd = "ffmpeg -y -i " + dst_seg
+    cmd = "avconv -y -i " + dst_seg
     for res in tgt_res:
         tgt_seg = os.path.join(config.worker_path, seg_id + '_' + res + '.mp4')
         cmd += " -c:v libx264 -c:a aac " + " -s " + res + " -strict -2 " + tgt_seg
