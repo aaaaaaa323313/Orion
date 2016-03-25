@@ -42,7 +42,7 @@ def transcode(seg_id):
 
 
 def callback(ch, method, properties, body):
-    #q = channel.queue_declare(queue = config.vm_name)
+    #q = channel.queue_declare(queue = config.bg_vm_name)
     #q_len = q.method.message_count
     #print q_len
     #print("Received %r" % body)
@@ -81,11 +81,11 @@ if __name__ == '__main__':
             host = config.broker_server))
 
     channel = connection.channel()
-    channel.queue_declare(queue = config.vm_name)
+    channel.queue_declare(queue = config.bg_vm_name)
     channel.basic_qos(prefetch_count=3)
 
 
-    channel.basic_consume(callback, queue = config.vm_name)
+    channel.basic_consume(callback, queue = config.bg_vm_name)
 
     channel.start_consuming()
 
