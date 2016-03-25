@@ -6,7 +6,9 @@ import urllib
 import config
 import MySQLdb
 import subprocess
-
+import signal
+import redis
+import sys
 
 db = None
 cursor = None
@@ -41,11 +43,32 @@ def transcode(seg_id):
     return ret
 
 
+def get_pid(name):
+    return subprocess.check_output(["pidof",name])
+
 def callback(ch, method, properties, body):
-    #q = channel.queue_declare(queue = config.vm_name)
-    #q_len = q.method.message_count
-    #print q_len
-    #print("Received %r" % body)
+   #print("Received %r" % body)
+
+    try:
+        pid = get_pid('avconv')
+
+        pid = int(pid)
+        r = redis.StrictRedis(host='localhost', port=6379, db=0)
+        cur_pid = r.get('cur_pid')
+        cur_sta = r.get('cur_sta')
+
+        if pid == cur_pid and cur_sta == 1:
+            os.kill(pid, signal.SIGSTOP)
+            r.set('cur_sta', 0)
+        elif pid == cur_pid and cur_sta == 0:
+            pass
+        elif pid != cur_pid:
+            os.kill(pid, signal.SIGSTOP)
+            r.set('cur_pid', pid)
+            r.set('cur_sta', 0)
+    except subprocess.CalledProcessError:
+        pid = None
+
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
     seg_id = body
@@ -56,7 +79,6 @@ def callback(ch, method, properties, body):
         return -1
 
     ret = transcode(seg_id)
-    #print ch.method.message_count
     if ret == 0:
         cmd = "UPDATE tasks SET end_time = now(), success = 1  WHERE \
                 segment_id = \"%s\"" % seg_id
@@ -67,6 +89,12 @@ def callback(ch, method, properties, body):
         except:
             db.rollback()
             print 'db error'
+
+    q = channel.queue_declare(queue = config.vm_name)
+    q_len = q.method.message_count
+    if q_len > 0 and pid == None:
+        os.kill(pid, signal.SIGCONT)
+        r.set('cur_sta', 1)
 
 
 
