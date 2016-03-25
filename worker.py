@@ -11,6 +11,7 @@ import subprocess
 db = None
 cursor = None
 worker_path = config.worker_path
+global channel
 
 def download_segment(seg_id):
     seg = urllib.URLopener()
@@ -29,26 +30,33 @@ def transcode(seg_id):
     cmd = "ffmpeg -y -i " + dst_seg
     for res in tgt_res:
         tgt_seg = os.path.join(config.worker_path, seg_id + '_' + res + '.mp4')
-        cmd += " -s " + res + " -strict -2 " + tgt_seg
+        cmd += " -c:v libx264 -c:a aac " + " -s " + res + " -strict -2 " + tgt_seg
 
+    #print cmd
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
     stdout, stderr = p.communicate()
     ret = p.returncode
+    if ret != 0:
+        print ret
     return ret
 
 
 def callback(ch, method, properties, body):
-    print("Received %r" % body)
+    q = channel.queue_declare(queue = config.vm_name)
+    q_len = q.method.message_count
+    print q_len
+    #print("Received %r" % body)
     ch.basic_ack(delivery_tag = method.delivery_tag)
 
     seg_id = body
     old_t  = time.time()
     ret = download_segment(seg_id)
-    print time.time() - old_t
+    #print time.time() - old_t
     if ret == -1:
         return -1
 
     ret = transcode(seg_id)
+    #print ch.method.message_count
     if ret == 0:
         cmd = "UPDATE tasks SET end_time = now(), success = 1  WHERE \
                 segment_id = \"%s\"" % seg_id
