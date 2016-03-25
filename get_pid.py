@@ -1,14 +1,21 @@
-from subprocess import check_output
+import subprocess
 import psutil
 import signal
 import redis
 import time
 import os
+import sys
 
 def get_pid(name):
-    return check_output(["pidof",name])
+    return subprocess.check_output(["pidof",name])
 
-pid = get_pid('avconv')
+
+try:
+    pid = get_pid('avconv')
+except subprocess.CalledProcessError:
+    print 'no process detected'
+    sys.exit()
+
 pid = int(pid)
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
 cur_pid = r.get('cur_pid')
