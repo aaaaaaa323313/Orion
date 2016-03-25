@@ -18,7 +18,7 @@ def id_gen(size=6, chars = string.ascii_uppercase + string.digits + \
 
 def declare_queue(channel):
     for i in range(1, config.max_vm_num + 1):
-        vm_name = 'vm_' + str(i)
+        vm_name = 'bg_vm_' + str(i)
         channel.queue_declare(queue = vm_name)
     return 0
 
@@ -68,7 +68,7 @@ if __name__ == '__main__':
             copy_video_seg(seg_id)
 
             #vm_name = 'vm_' + str(i%10 +1)
-            vm_name = 'vm_' + str(8)
+            vm_name = 'bg_vm_' + str(8)
 
             try:
                 cmd = "INSERT INTO tasks VALUES (NULL, \"%s\", \"%s\", NULL, 0, 0)" % (seg_id, vm_name)
