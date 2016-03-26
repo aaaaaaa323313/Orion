@@ -66,7 +66,7 @@ def callback(ch, method, properties, body):
             os.kill(pid, signal.SIGSTOP)
             r.set('cur_pid', pid)
             r.set('cur_sta', 0)
-    except subprocess.CalledProcessError:
+    except:
         pid = None
 
     ch.basic_ack(delivery_tag = method.delivery_tag)
@@ -93,8 +93,11 @@ def callback(ch, method, properties, body):
     q = channel.queue_declare(queue = config.fg_vm_name)
     q_len = q.method.message_count
     if q_len == 0 and pid != None:
-        os.kill(pid, signal.SIGCONT)
-        r.set('cur_sta', 1)
+        try:
+            os.kill(pid, signal.SIGCONT)
+            r.set('cur_sta', 1)
+        except:
+            pass
 
 
 
